@@ -34,7 +34,10 @@ export default class FeedItem extends React.Component {
     try {
       const { content = {} } = this.props;
       const user = firebase.auth().currentUser;
-      // Add your code here
+
+      let bookmarkRef = firestore.doc('users/' + user.uid + '/bookmarks/' + content.id);
+      let bookmark = await bookmarkRef.get();
+      if(bookmark.exists) this.setState({bookmarked: true});
     } catch (err) {
       console.log(err);
     }
@@ -62,7 +65,9 @@ export default class FeedItem extends React.Component {
 
       const { content = {} } = this.props;
       const user = firebase.auth().currentUser;
-      // Add your code here
+    
+      let bookmarkRef = firestore.doc('users/' + user.uid + '/bookmarks/' + content.id);
+      await bookmarkRef.set(content);
 
     this.setState({ savingBookmark: false });
   }
@@ -79,7 +84,8 @@ export default class FeedItem extends React.Component {
 
       const { content = {} } = this.props;
       const user = firebase.auth().currentUser;
-      // Add you code here
+      let bookmarkRef = firestore.doc('users/' + user.uid + '/bookmarks/' + content.id);
+      await bookmarkRef.delete();
 
     this.setState({ savingBookmark: false });
   }

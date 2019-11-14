@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "crypto": "^1.0.1",
     "expo": "^35.0.0",
     "firebase": "^7.3.0",
     "react": "16.8.3",

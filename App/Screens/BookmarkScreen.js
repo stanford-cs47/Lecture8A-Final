@@ -5,6 +5,7 @@ import { Metrics } from '../Themes';
 import styles from './Styles/BookmarkScreen.styles';
 import firestore from '../../firebase';
 import firebase from 'firebase';
+// import { timingSafeEqual } from 'crypto';
 
 export default class BookmarkScreen extends React.Component {
 
@@ -25,6 +26,7 @@ export default class BookmarkScreen extends React.Component {
   componentDidMount() {
     const user = firebase.auth().currentUser;
     let bookmarksRef = firestore.collection('users/' + user.uid + '/bookmarks');
+
     // We want our list of bookmarks to update in realtime (so the user doesn't have to
     // refresh the page to see any changes). This basically waits for a change in the 
     // bookmarks collection and then tells the program to retrieve all of the bookmarks
@@ -56,6 +58,11 @@ export default class BookmarkScreen extends React.Component {
       let bookmarks = [];
 
       // Add your code here
+      let bookmarkCollectionRef = firestore.collection('users/' + user.uid + '/bookmarks');
+      let allBookmarks = await bookmarkCollectionRef.get();
+      allBookmarks.forEach((bookmark) => {
+        bookmarks.push(bookmark.data());  // Dont forget to do .data()....
+      })
 
       return (bookmarks ? bookmarks : []);
     } catch (error) {
